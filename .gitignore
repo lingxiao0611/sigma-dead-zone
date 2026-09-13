@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+*.so
+.ipynb_checkpoints/
+outputs/
+ckpt/*
+!ckpt/README.md
+*.pth
+*.ckpt
+*.npz
+*.log
+.DS_Store
+.venv/

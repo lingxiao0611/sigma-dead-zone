@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use this code or the audit records, please cite the paper."
+title: "The sigma Dead Zone in Auditing Pixel-wise Uncertainty for Underwater Image Restoration"
+authors:
+  - family-names: Yu
+    given-names: Xiangmiao
+    affiliation: "College of Computer Engineering, Jimei University, Xiamen, China"
+    orcid: "https://orcid.org/0009-0000-6008-3731"
+year: 2026
+license: MIT
+repository-code: "https://github.com/<USER>/sigma-dead-zone"
+type: software

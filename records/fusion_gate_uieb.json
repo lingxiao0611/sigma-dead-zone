@@ -1,0 +1,78 @@
+{
+ "edl": {
+  "gate_params": {
+   "qlo": 0.0,
+   "qhi": 0.99,
+   "lo": 0.0013132026651874185,
+   "hi": 0.05014169234782451,
+   "cal_global_mse": 0.022644011303782463,
+   "alpha_bar": 0.6543281674385071,
+   "w_star": 0.65
+  },
+  "n_test": 445,
+  "input_mean": 17.87483787536621,
+  "input_p10": 12.418594360351562,
+  "input_worst": 7.798227310180664,
+  "naive_mean": 17.595703125,
+  "naive_p10": 13.403663063049317,
+  "naive_worst": 9.148144721984863,
+  "gate_mean": 18.29030418395996,
+  "gate_p10": 13.684363555908204,
+  "gate_worst": 9.070417404174805,
+  "uniform_mean": 18.246599197387695,
+  "uniform_p10": 13.497965431213379,
+  "uniform_worst": 9.061041831970215,
+  "wstar_mean": 18.251863479614258,
+  "wstar_p10": 13.501664924621583,
+  "wstar_worst": 9.059747695922852,
+  "gate_minus_naive_mean": 0.6946005821228027,
+  "gate_minus_uniform_mean": 0.043704479932785034,
+  "gate_minus_wstar_mean": 0.03843773156404495,
+  "n_gate_improves": 283,
+  "frac_gate_improves": 0.6359550561797753,
+  "harmful_restoration": {
+   "n": 200,
+   "naive_mean_psnr": 17.683080673217773,
+   "gate_mean_psnr": 19.565967559814453,
+   "uniform_mean_psnr": 19.37289810180664
+  }
+ },
+ "ensemble": {
+  "gate_params": {
+   "qlo": 0.0,
+   "qhi": 1.0,
+   "lo": 0.0,
+   "hi": 0.3373548090457916,
+   "cal_global_mse": 0.02270084246993065,
+   "alpha_bar": 0.9125263094902039,
+   "w_star": 0.75
+  },
+  "n_test": 445,
+  "input_mean": 17.87483787536621,
+  "input_p10": 12.418594360351562,
+  "input_worst": 7.798227310180664,
+  "naive_mean": 17.773338317871094,
+  "naive_p10": 13.517058181762696,
+  "naive_worst": 8.874831199645996,
+  "gate_mean": 17.881284713745117,
+  "gate_p10": 13.519464302062989,
+  "gate_worst": 8.285160064697266,
+  "uniform_mean": 17.965038299560547,
+  "uniform_p10": 13.602313041687012,
+  "uniform_worst": 8.852530479431152,
+  "wstar_mean": 18.244951248168945,
+  "wstar_p10": 13.704236221313476,
+  "wstar_worst": 8.769207954406738,
+  "gate_minus_naive_mean": 0.10794619470834732,
+  "gate_minus_uniform_mean": -0.08375343680381775,
+  "gate_minus_wstar_mean": -0.3636668622493744,
+  "n_gate_improves": 320,
+  "frac_gate_improves": 0.7191011235955056,
+  "harmful_restoration": {
+   "n": 190,
+   "naive_mean_psnr": 17.68851089477539,
+   "gate_mean_psnr": 18.16741371154785,
+   "uniform_mean_psnr": 18.112213134765625
+  }
+ }
+}

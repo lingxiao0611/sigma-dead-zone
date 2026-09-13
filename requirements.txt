@@ -1,0 +1,14 @@
+# Verified against the CUDA 12.1 environment used for all experiments.
+torch==2.5.1
+torchvision==0.20.1
+numpy
+Pillow
+matplotlib
+scikit-learn
+scikit-image
+uncertainty-toolbox
+pytorch-ssim
+pytorch-lightning==2.4.0
+
+# Required only for the Mamba-UIE arm -- install with the CUDA toolkit, not pip wheels:
+#   pip install causal-conv1d>=1.2.0 mamba-ssm

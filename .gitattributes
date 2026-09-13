@@ -1,0 +1,10 @@
+# Keep line endings LF everywhere. The shell scripts in scripts/ are meant to run on the
+# Linux training host, and a CRLF shebang fails there.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.pdf binary
+*.npz binary
+*.pth binary
+*.ckpt binary

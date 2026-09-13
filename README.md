@@ -69,6 +69,7 @@ into `outputs/` on the machine that runs them.
 | `eval_crossdomain_uieb.py` | Sec. V-D, Table IV — ratio inflation across water bodies |
 | `eval_fewshot_recal.py` | Sec. V-D, Fig. 2(b) — few-shot recalibration convergence |
 | `eval_split_stability.py` | Sec. V-C — scalar stability over 30 random splits |
+| `eval_scoring_rules.py` | Sec. V-C, Table III — NLL and CRPS before and after recalibration |
 | `eval_rejection.py`, `eval_ushape_rejection.py` | Sec. V-F, Table V — rejection economics |
 | `eval_bootstrap_ci.py` | Sec. IV (Statistics) — image-level cluster bootstrap |
 | `eval_strat_proxy_evidence.py` | Sec. V-B — the three severity proxies |

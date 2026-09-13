@@ -1,0 +1,69 @@
+{
+  "sigma_floor": 0.0001,
+  "paradigms": {
+    "EDL (FUnIE)": {
+      "EUVP": {
+        "nll_raw": 10.05872426409243,
+        "nll_recal": -0.9779837291988346,
+        "crps_raw": 0.04636014696001111,
+        "crps_recal": 0.04021373973794524,
+        "note": "sigma floored on 0 of 6144000 pixels"
+      },
+      "UIEB": {
+        "nll_raw": 48.151975571514974,
+        "nll_recal": -0.2668582369487149,
+        "crps_raw": 0.10470359073513778,
+        "crps_recal": 0.08450353819653074,
+        "note": "sigma floored on 0 of 5468160 pixels"
+      }
+    },
+    "Ensemble (FUnIE)": {
+      "EUVP": {
+        "nll_raw": 17.61287311876613,
+        "nll_recal": -0.6211799987688137,
+        "crps_raw": 0.044976684990820255,
+        "crps_recal": 0.03994618505188938,
+        "note": "sigma floored on 0 of 6144000 pixels"
+      },
+      "UIEB": {
+        "nll_raw": 46.23471964682404,
+        "nll_recal": 0.336094016430895,
+        "crps_raw": 0.0987829059674972,
+        "crps_recal": 0.088418091505969,
+        "note": "sigma floored on 1 of 5468160 pixels"
+      }
+    },
+    "EDL (U-shape)": {
+      "EUVP": {
+        "nll_raw": 3.7297404099682416,
+        "nll_recal": -1.142268379839994,
+        "crps_raw": 0.04968234553043188,
+        "crps_recal": 0.04351333350082088,
+        "note": "its own recalibration, not the FUnIE ratio"
+      },
+      "UIEB": {
+        "nll_raw": 28.450195071693845,
+        "nll_recal": -0.30859046359137987,
+        "crps_raw": 0.1109987323800009,
+        "crps_recal": 0.09030739064444404,
+        "note": "cross-domain ratio applied in-domain; no held-out recalibration on UIEB"
+      }
+    },
+    "PUIE (CVAE)": {
+      "EUVP": {
+        "nll_raw": 2945001.6516134692,
+        "nll_recal": 57115.44544719578,
+        "crps_raw": 0.0653318261172266,
+        "crps_recal": 0.05239522398381152,
+        "note": "NLL of order 1e6: sigma collapses on a few pixels"
+      },
+      "UIEB": {
+        "nll_raw": 8738820.870322214,
+        "nll_recal": null,
+        "crps_raw": 0.10834689218832329,
+        "crps_recal": null,
+        "note": "no recalibration carried out cross-domain"
+      }
+    }
+  }
+}

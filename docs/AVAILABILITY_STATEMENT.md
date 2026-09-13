@@ -10,7 +10,7 @@ below before `\bibliographystyle` in `latex/main.tex` so those claims resolve.
 \section*{Availability of Data and Code}
 The audit protocol, all training and evaluation scripts, and the per-image audit records behind
 every number and figure in this article are available at
-\url{https://github.com/<USER>/sigma-dead-zone} and archived at
+\url{https://github.com/lingxiao0611/sigma-dead-zone} and archived at
 \url{https://doi.org/<ZENODO_DOI>}. The datasets are public: EUVP~\cite{islam2020euvp},
 UIEB~\cite{li2020underwater}, U45~\cite{li2019fusion}, and RUIE-UIQS~\cite{liu2020real}.
 ```
@@ -23,7 +23,7 @@ URL than at the phrase — the current wording is consistent either way:
 
 ## Before you paste
 
-- Replace `<USER>` with the GitHub account name.
+- The repository URL is already filled in: https://github.com/lingxiao0611/sigma-dead-zone
 - Replace `<ZENODO_DOI>` after minting the DOI (Zenodo can mint one straight from a GitHub release).
 - Check the section heading against the TCSVT author guide; some IEEE journals expect this as a
   footnote on the first page instead of a standalone section. Either placement is accepted in

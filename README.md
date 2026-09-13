@@ -25,6 +25,7 @@ a failure we call the $\sigma$ **dead zone**. Only deep ensembles stay informati
 |---|---|
 | `scripts/` | Every training and evaluation script used in the paper. |
 | `records/` | The JSON audit records behind every number and figure, one file per experiment. |
+| `figures/` | The manuscript figures, as vector PDF plus 400 dpi PNG, at the exact size they are printed. |
 | `docs/REPRODUCE.md` | Environment, datasets, upstream models, and the run order. |
 | `docs/UPSTREAM_REPOS.md` | The third-party repositories we build on, with what we changed. |
 | `docs/TO_FETCH_FROM_SERVER.md` | The few private modules you must copy from your training host. |
@@ -65,10 +66,10 @@ into `outputs/` on the machine that runs them.
 | `train_ushape_baseline.py`, `train_ushape_edl.py`, `train_ushape_ens4090.py` | Sec. V-A, Table I — accuracy cost of the uncertainty mechanism, U-shape backbone |
 | `train_funie_gauss.py`, `train_mamba_fp32.py` | Sec. VI-B — Gaussian-head control, Mamba-UIE precision reference |
 | `eval_coverage_stratified.py` | Sec. V-C, V-E, Figs. 3–4 — stratified coverage and the dead zone |
-| `eval_crossdomain_uieb.py` | Sec. V-D, Table III — ratio inflation across water bodies |
+| `eval_crossdomain_uieb.py` | Sec. V-D, Table IV — ratio inflation across water bodies |
 | `eval_fewshot_recal.py` | Sec. V-D, Fig. 2(b) — few-shot recalibration convergence |
 | `eval_split_stability.py` | Sec. V-C — scalar stability over 30 random splits |
-| `eval_rejection.py`, `eval_ushape_rejection.py` | Sec. V-F, Table IV — rejection economics |
+| `eval_rejection.py`, `eval_ushape_rejection.py` | Sec. V-F, Table V — rejection economics |
 | `eval_bootstrap_ci.py` | Sec. IV (Statistics) — image-level cluster bootstrap |
 | `eval_strat_proxy_evidence.py` | Sec. V-B — the three severity proxies |
 | `eval_reffree_response.py` | Sec. V-E — reference-free corroboration (RUIE-UIQS, U45) |
@@ -79,9 +80,9 @@ into `outputs/` on the machine that runs them.
 | `eval_sigma_severity.py` | Sec. V-E, Fig. 5 — degradation response profiles |
 | `eval_puie_*.py`, `eval_mcbn_recal.py`, `eval_bem_calib.py` | Sec. VI-C — the paradigms outside the main comparison |
 | `eval_mambauie_*.py`, `eval_mambauie_psnr.py` | Sec. V-A — Mamba-UIE accuracy reference |
-| `eval_ushape_calib.py`, `eval_ushape_strat.py`, `eval_ushape_crossdomain.py`, `eval_ushape_recal.py` | Sec. V-G, Table V — backbone robustness |
+| `eval_ushape_calib.py`, `eval_ushape_strat.py`, `eval_ushape_crossdomain.py`, `eval_ushape_recal.py` | Sec. V-G, Table VI — backbone robustness |
 | `port_risk_coverage.py` | Generates `uq/tu_risk_coverage.py`: TorchUncertainty's AURC/AUGRC core adapted from classification to regression |
-| `make_figures.py` | Every figure in the paper |
+| `make_figures.py` | Every figure in the paper, from `records/*.json` and the per-pixel arrays; writes vector PDF plus PNG into `figures/` |
 
 ---
 
@@ -93,7 +94,7 @@ the stratification robustness check of Sec. V-B. Each file is self-describing; k
 metric names used in the text.
 
 Two records belonging to the U-shape Transformer ensemble arm are still on the training host, so
-the U-shape+ENS column of Table VII is for now the single table entry without a backing file here;
+the U-shape+ENS column of Table VI is for now the single table entry without a backing file here;
 `docs/TO_FETCH_FROM_SERVER.md` lists the two paths.
 
 Raw per-pixel $\sigma$ and error arrays (85 MB and 76 MB compressed, EUVP and UIEB) are archived

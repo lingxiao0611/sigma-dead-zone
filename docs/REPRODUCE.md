@@ -62,7 +62,21 @@ reverts to its authors' batch size of 1.
 
 ## 5. Expected outputs
 
-Each evaluation script writes JSON into `outputs/`. Byte-identical reproduction is not guaranteed
-across GPU models and library versions, but every ordering and every reported verdict in the paper
-is stable across runs; the split is fixed by `ckpt/funie_baseline/split.json` and all other
-sampling uses fixed seeds.
+Each evaluation script writes JSON into `outputs/`; `records/` mirrors the local `outputs/` tree and
+holds every JSON the paper cites. Byte-identical reproduction is not guaranteed across GPU models and
+library versions, but every ordering and every reported verdict in the paper is stable across runs;
+the split is fixed by `ckpt/funie_baseline/split.json` and all other sampling uses fixed seeds.
+
+Two conventions are worth stating because they are easy to get wrong.
+
+`records/ushape_ens_audit.json` is the protocol-corrected run for the U-shape ensemble arm. An
+earlier run of the same script evaluated the full EUVP validation block (1000 images, calibration
+fold included) and the full 890-image UIEB set, which violates the 500-calibration/500-test and
+445-image UIEB protocols the rest of the paper uses; it is not shipped. The shipped record is the
+re-evaluation on the correct splits, and it is the source of Table VII's U-shape+ENS column.
+
+Risk-coverage AUCs in `records/` follow the TorchUncertainty convention, in which the curve is built
+by retaining the pixels assigned the highest confidence and confidence is `-sigma`. A hand-written
+`argsort(-sigma)` sweep builds the opposite curve and cannot be compared against MAE; every AURC we
+report uses the TorchUncertainty direction, so a lower AURC than the `aurc_random` field in the same
+JSON means the ranking carries information.

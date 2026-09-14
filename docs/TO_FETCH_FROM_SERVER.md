@@ -47,22 +47,7 @@ paper depends on. Without it, results will not reproduce.
 These are small (FUnIE-GAN is ~2M parameters; the five-member ensemble is roughly 10M in total) and
 can live in a GitHub release or on Zenodo. They are gitignored by default.
 
-## 4b. Required — the U-shape ensemble audit records
-
-`records/` currently holds twenty audit JSONs. Two more were produced on the training host and were
-never copied back, and Table VII's U-shape+ENS column rests entirely on them:
-
-```
-/outputs/ushape_ens_audit.json   -> records/ushape_ens_audit.json
-/outputs/ushape_ens_reffree.json -> records/ushape_ens_reffree.json
-```
-
-Without them the U-shape+ENS cells of Table VII (marginal $1\sigma$ 27.6\% / 17.4\%, ratio
-2.854$\to$3.755, AURC 0.0373$\to$0.0919) and its RUIE $\rho$ entry of $+0.14$ cannot be reproduced
-from the released records. The other three columns of that table are covered by
-`ushape_stratified.json`, `ushape_crossdomain_uieb.json` and `ushape_rejection_stage4.json`.
-
-## 5. Optional — the raw per-pixel arrays
+## 4. Optional — the raw per-pixel arrays
 
 ```
 /outputs/arrays_EUVP.npz  (85 MB)

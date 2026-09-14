@@ -24,6 +24,10 @@ URL than at the phrase — the current wording is consistent either way:
 ## Before you paste
 
 - The repository URL is already filled in: https://github.com/lingxiao0611/sigma-dead-zone
+- `records/` now backs every table in the paper, the U-shape Transformer ensemble arm included
+  (`ushape_ens_audit.json`, `ushape_ens_reffree.json`) — the claim of the paragraph below resolves
+  as written. The per-pixel arrays that the figures are drawn from are still only on Zenodo, so keep
+  the wording about "per-image audit records" and do not widen it to "every figure".
 - Replace `<ZENODO_DOI>` after minting the DOI (Zenodo can mint one straight from a GitHub release).
 - Check the section heading against the TCSVT author guide; some IEEE journals expect this as a
   footnote on the first page instead of a standalone section. Either placement is accepted in

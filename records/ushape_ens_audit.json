@@ -1,0 +1,125 @@
+{
+  "method": "ENS@U-shape",
+  "n_members": 5,
+  "device": "cuda:0",
+  "generated": "2026-09-08 15:14:21",
+  "EUVP": {
+    "dataset": "EUVP",
+    "psnr": 23.35857582092285,
+    "ratio": 2.8539721965789795,
+    "cov1_raw": 0.27623677883814873,
+    "cov1_recal": 0.6415174375308038,
+    "rms_err": 0.08097244054079056,
+    "rms_std_raw": 0.028371838852763176,
+    "rms_std_recal": 0.08097243925160535,
+    "n_pixels": 76873728,
+    "stratified": [
+      {
+        "contrast_bin": 0,
+        "contrast_range": [
+          0.10489857941865921,
+          0.2887168824672699
+        ],
+        "cov1_raw": 0.28897629570715205,
+        "cov1_recal": 0.6539932722897873,
+        "n": 19070976
+      },
+      {
+        "contrast_bin": 1,
+        "contrast_range": [
+          0.28915169835090637,
+          0.34572651982307434
+        ],
+        "cov1_raw": 0.2767846762728529,
+        "cov1_recal": 0.6422611677727732,
+        "n": 19267584
+      },
+      {
+        "contrast_bin": 2,
+        "contrast_range": [
+          0.3492560088634491,
+          0.40672722458839417
+        ],
+        "cov1_raw": 0.27058504065688777,
+        "cov1_recal": 0.6399125079719388,
+        "n": 19267584
+      },
+      {
+        "contrast_bin": 3,
+        "contrast_range": [
+          0.40740662813186646,
+          0.6211785674095154
+        ],
+        "cov1_raw": 0.268731097785794,
+        "cov1_recal": 0.6300301065250319,
+        "n": 19267584
+      }
+    ],
+    "risk_coverage": {
+      "aurc": 0.03732483386823412,
+      "aurc_random": 0.05447181686758995,
+      "risk_at_80cov": 0.03789709884953868,
+      "rejection_gain_at_80": 0.01657471801805127
+    }
+  },
+  "UIEB": {
+    "dataset": "UIEB",
+    "psnr": 17.30003547668457,
+    "ratio": 3.754757881164551,
+    "cov1_raw": 0.1743594623237067,
+    "cov1_recal": 0.5426603624436739,
+    "rms_err": 0.15541806817054749,
+    "rms_std_raw": 0.04139230027794838,
+    "rms_std_recal": 0.1554180656881563,
+    "n_pixels": 87490560,
+    "stratified": [
+      {
+        "contrast_bin": 0,
+        "contrast_range": [
+          0.033090658485889435,
+          0.1994989961385727
+        ],
+        "cov1_raw": 0.16319256573468,
+        "cov1_recal": 0.49755419481981983,
+        "n": 21823488
+      },
+      {
+        "contrast_bin": 1,
+        "contrast_range": [
+          0.19992202520370483,
+          0.27072444558143616
+        ],
+        "cov1_raw": 0.15615084078218844,
+        "cov1_recal": 0.48682703699793545,
+        "n": 21823488
+      },
+      {
+        "contrast_bin": 2,
+        "contrast_range": [
+          0.27104443311691284,
+          0.34654316306114197
+        ],
+        "cov1_raw": 0.1741582738744604,
+        "cov1_recal": 0.5669770570130678,
+        "n": 21823488
+      },
+      {
+        "contrast_bin": 3,
+        "contrast_range": [
+          0.3498184084892273,
+          0.574747622013092
+        ],
+        "cov1_raw": 0.20367209116617838,
+        "cov1_recal": 0.6185990288144066,
+        "n": 22020096
+      }
+    ],
+    "risk_coverage": {
+      "aurc": 0.09190648330525221,
+      "aurc_random": 0.11739298701286316,
+      "risk_at_80cov": 0.07944872852568323,
+      "rejection_gain_at_80": 0.03794425848717993
+    }
+  },
+  "reffree_spearman_sigma_vs_contrast": "skip:CUDA out of memory. Tried to allocate 16.00 MiB. GPU 0 has a total capacity of 23.52 GiB of which 14.06 MiB is free. Process 1654184 has 18.96 GiB memory in use. Including non-PyTorch memory, this process has 4.39 GiB memory in use. Of the allocated memory 3.85 GiB is allocated by PyTorch, and 97.29 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)"
+}

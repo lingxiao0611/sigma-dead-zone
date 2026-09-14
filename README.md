@@ -81,7 +81,7 @@ into `outputs/` on the machine that runs them.
 | `eval_sigma_severity.py` | Sec. V-E, Fig. 5 — degradation response profiles |
 | `eval_puie_*.py`, `eval_mcbn_recal.py`, `eval_bem_calib.py` | Sec. VI-C — the paradigms outside the main comparison |
 | `eval_mambauie_*.py`, `eval_mambauie_psnr.py` | Sec. V-A — Mamba-UIE accuracy reference |
-| `eval_ushape_calib.py`, `eval_ushape_strat.py`, `eval_ushape_crossdomain.py`, `eval_ushape_recal.py` | Sec. V-G, Table VI — backbone robustness |
+| `eval_ushape_calib.py`, `eval_ushape_strat.py`, `eval_ushape_crossdomain.py`, `eval_ushape_recal.py`, `eval_ushape_rejection.py`, `eval_ushape_ens_audit.py` | Sec. V-G, Table VII — backbone robustness |
 | `port_risk_coverage.py` | Generates `uq/tu_risk_coverage.py`: TorchUncertainty's AURC/AUGRC core adapted from classification to regression |
 | `make_figures.py` | Every figure in the paper, from `records/*.json` and the per-pixel arrays; writes vector PDF plus PNG into `figures/` |
 
@@ -92,11 +92,9 @@ into `outputs/` on the machine that runs them.
 `records/` holds the machine-readable output of the audit, one JSON per experiment. These are the
 files quoted in the "released records" notes in the paper — including the per-proxy tables behind
 the stratification robustness check of Sec. V-B. Each file is self-describing; keys mirror the
-metric names used in the text.
-
-Two records belonging to the U-shape Transformer ensemble arm are still on the training host, so
-the U-shape+ENS column of Table VI is for now the single table entry without a backing file here;
-`docs/TO_FETCH_FROM_SERVER.md` lists the two paths.
+metric names used in the text. Every table in the paper has a backing file here, the U-shape
+Transformer ensemble arm included (`records/ushape_ens_audit.json` and
+`records/ushape_ens_reffree.json`, produced by `scripts/eval_ushape_ens_audit.py`).
 
 Raw per-pixel $\sigma$ and error arrays (85 MB and 76 MB compressed, EUVP and UIEB) are archived
 at `https://doi.org/<ZENODO_DOI>` rather than committed here.

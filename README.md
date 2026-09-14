@@ -25,7 +25,7 @@ a failure we call the $\sigma$ **dead zone**. Only deep ensembles stay informati
 |---|---|
 | `scripts/` | Every training and evaluation script used in the paper. |
 | `records/` | The JSON audit records behind every number and figure, one file per experiment. |
-| `figures/` | The manuscript figures, as vector PDF plus 400 dpi PNG, at the exact size they are printed. |
+| `figures/` | The manuscript figures, as vector PDF plus 400 dpi PNG, at the exact size they are printed. File names follow the print order of the paper (`fig2_protocol` is Fig. 2, `fig3a_reliability` and `fig3b_fewshot` are the two panels of Fig. 3, and so on), so a figure can be found from its number without a lookup table. |
 | `docs/REPRODUCE.md` | Environment, datasets, upstream models, and the run order. |
 | `docs/UPSTREAM_REPOS.md` | The third-party repositories we build on, with what we changed. |
 | `docs/TO_FETCH_FROM_SERVER.md` | The few private modules you must copy from your training host. |

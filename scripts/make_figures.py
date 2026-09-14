@@ -7,15 +7,19 @@ Design rules applied here so that LaTeX never rescales a panel:
     across all panels of the paper;
   * one semantic palette for the whole manuscript
     (blue = ensemble, red = evidential, teal = CVAE, dark = error, gray = reference);
+  * the severity axis points the same way in every figure: S1 (heaviest
+    degradation) on the left, S4 (lightest) on the right;
   * no top/right spines, no legend frame, Type-42 outlines (vector-safe PDF).
 
-Figures produced
-  fig2a_reliability   reliability diagram, in-domain marginal coverage
-  fig2b_fewshot       few-shot recalibration on the target water body
-  fig3_pixel_response (a) pooled decile response  (b) per-image rho distribution
-  fig4a_stratified    cross-domain stratified coverage (shape distortion)
-  fig4b_riskcov       risk-coverage, in-domain vs cross-domain
-  fig5_response       degradation response profiles
+Figures produced (print order = file order)
+  fig1_teaser         four-panel teaser (rendered separately, UIEB #634)
+  fig2_protocol       the audit protocol, one full-width row
+  fig3a_reliability   reliability diagram, in-domain marginal coverage
+  fig3b_fewshot       few-shot recalibration on the target water body
+  fig4_pixel_response (a) pooled decile response  (b) per-image rho distribution
+  fig5_deadzone       (a) stratified coverage  (b,c) risk-coverage
+  fig6_response       degradation response profiles
+  fig7_evidence       NIG evidence parameters against severity
 
 Data: outputs/*.json (audit records) + outputs/arrays_{EUVP,UIEB}.npz
       (per-pixel sigma and error, 64x64 x 3 channels).
@@ -29,7 +33,7 @@ import numpy as np
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from matplotlib.lines import Line2D
+from matplotlib.patches import FancyBboxPatch
 from scipy.stats import norm
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -61,6 +65,7 @@ cs = json.load(open(os.path.join(ROOT, "outputs", "coverage_stratified.json"), e
 fs = json.load(open(os.path.join(ROOT, "outputs", "fewshot_recal_uieb.json"), encoding="utf-8"))
 rj = json.load(open(os.path.join(ROOT, "outputs", "rejection_stage4.json"), encoding="utf-8"))
 pe = json.load(open(os.path.join(ROOT, "outputs", "puie_eval.json"), encoding="utf-8"))
+hiv = json.load(open(os.path.join(ROOT, "outputs", "head_intervention.json"), encoding="utf-8"))
 dE = np.load(os.path.join(ROOT, "outputs", "arrays_EUVP.npz"))
 dU = np.load(os.path.join(ROOT, "outputs", "arrays_UIEB.npz"))
 
@@ -78,7 +83,82 @@ def save(fig, name):
 
 
 # =====================================================================
-# Fig. 2(a) -- reliability diagram, in-domain (EUVP test-500).
+# Fig. 2 -- the audit protocol.
+# The paper had no method schematic: Sec. III is four subsections of prose
+# and Fig. 1 is a teaser, so a reader had to assemble the flow in his head.
+# One row reads left to right, objects -> strata -> metrics -> operations,
+# and the bar underneath is the rule the audit outputs.
+# Geometry is in fixed data units (0-100) so nothing reflows when the font
+# is substituted; LaTeX includes the result 1:1.
+# =====================================================================
+FC, EC, TC = "#F4F6F8", "#8A93A0", "#333333"
+
+
+def stage(ax, x0, x1, y0, y1, title, lines, ts=7.0, bs=6.2, dy=7.8):
+    ax.add_patch(FancyBboxPatch((x0, y0), x1 - x0, y1 - y0,
+                                boxstyle="round,pad=0,rounding_size=1.6",
+                                fc=FC, ec=EC, lw=0.7, zorder=2))
+    cx = 0.5 * (x0 + x1)
+    ax.text(cx, y1 - 4.6, title, ha="center", va="top", fontsize=ts,
+            fontweight="bold", color="#1B1F24", zorder=3)
+    y = y1 - 4.6 - dy
+    for ln in lines:
+        ax.text(cx, y, ln, ha="center", va="top", fontsize=bs, color=TC, zorder=3)
+        y -= dy
+
+
+fig = plt.figure(figsize=(7.06, 1.80))
+ax = fig.add_axes([0, 0, 1, 1])
+ax.set_xlim(0, 100)
+ax.set_ylim(0, 100)
+ax.axis("off")
+
+Y0, Y1, YM = 38.0, 92.0, 0.5 * (38.0 + 92.0)
+X = [(0.6, 19.6), (22.4, 41.4), (44.2, 76.2), (79.0, 99.4)]
+
+stage(ax, X[0][0], X[0][1], Y0, Y1, "Audited objects", [
+    "per-pixel $\\sigma$ and $|e|$",
+    "4 released",
+    "mechanisms, 2",
+    "backbones",
+])
+stage(ax, X[1][0], X[1][1], Y0, Y1, "Severity strata", [
+    "input-only proxy:",
+    "grayscale contrast,",
+    "quartiles",
+    "S1 (heaviest)",
+    "to S4 (lightest)",
+])
+stage(ax, X[2][0], X[2][1], Y0, Y1, "Three metric families", [
+    "Coverage (magnitude):",
+    "is $|e| \\leq \\sigma$ as often as claimed?",
+    "Ranking (order): are the high-$\\sigma$",
+    "pixels the erring ones?",
+    "Utility: error removed at retention",
+])
+stage(ax, X[3][0], X[3][1], Y0, Y1, "Two operations", [
+    "Recalibrate: one",
+    "scalar $r$ from ~100 refs",
+    "Reject: drop the",
+    "most-uncertain pixels",
+])
+for i in range(3):
+    ax.annotate("", xy=(X[i + 1][0] - 0.2, YM), xytext=(X[i][1] + 0.2, YM),
+                arrowprops=dict(arrowstyle="-|>", lw=0.9, color=EC,
+                                shrinkA=0, shrinkB=0, mutation_scale=7), zorder=1)
+ax.annotate("", xy=(89.2, 26.0), xytext=(89.2, Y0 - 0.4),
+            arrowprops=dict(arrowstyle="-|>", lw=0.9, color=EC,
+                            shrinkA=0, shrinkB=0, mutation_scale=7), zorder=1)
+ax.add_patch(FancyBboxPatch((0.6, 3.0), 98.8, 22.0,
+                            boxstyle="round,pad=0,rounding_size=1.6",
+                            fc="#E7EAEE", ec=EC, lw=0.7, zorder=2))
+ax.text(50.0, 14.0, "Deployment rule: recalibrate per water body, trust rejection "
+                    "only to ensembles, never select by marginal coverage",
+        ha="center", va="center", fontsize=7.0, fontweight="bold", color="#1B1F24", zorder=3)
+save(fig, "fig2_protocol")
+
+# =====================================================================
+# Fig. 3(a) -- reliability diagram, in-domain (EUVP test-500).
 # The old grouped bar chart could only draw the 1-sigma nominal line and
 # repeated Table II; a reliability curve uses the per-pixel arrays to show
 # the whole nominal range at once, and the diagonal makes the gap readable.
@@ -127,10 +207,10 @@ ax.set_xlabel("nominal confidence level")
 ax.set_ylabel("empirical marginal coverage")
 ax.legend(loc="upper left", handlelength=1.5, handletextpad=0.5, labelspacing=0.25,
           ncol=2, columnspacing=1.0, bbox_to_anchor=(-0.02, 1.04))
-save(fig, "fig2a_reliability")
+save(fig, "fig3a_reliability")
 
 # =====================================================================
-# Fig. 2(b) -- few-shot recalibration (log N, mean +/- s.d. over 30 draws).
+# Fig. 3(b) -- few-shot recalibration (log N, mean +/- s.d. over 30 draws).
 # =====================================================================
 fig, ax = plt.subplots(figsize=(3.90, 1.85))
 ax.axvspan(4.0, 20.0, color="0.93", zorder=0)
@@ -152,10 +232,10 @@ ax.set_ylim(0.02, 0.10)
 ax.set_xlabel("$N$ paired references in the target water body")
 ax.set_ylabel("RMS-CE (held-out test)")
 ax.legend(loc="upper right", handlelength=1.6, labelspacing=0.28, ncol=1)
-save(fig, "fig2b_fewshot")
+save(fig, "fig3b_fewshot")
 
 # =====================================================================
-# Fig. 3 -- the dead zone at pixel level.
+# Fig. 4 -- the dead zone at pixel level.
 # (a) pooled decile response: colour = paradigm, marker/linestyle = domain,
 #     cross-domain drawn heavier so the headline pair reads first.
 # (b) per-image rho distribution; medians marked horizontally.
@@ -223,10 +303,10 @@ ax.set_ylim(0, 44)
 ax.legend(loc="upper left", handlelength=1.5, fontsize=6.5, labelspacing=0.3)
 ax.text(-0.16, 1.05, "b", transform=ax.transAxes, fontsize=9, fontweight="bold")
 plt.tight_layout(w_pad=1.5)
-save(fig, "fig3_pixel_response")
+save(fig, "fig4_pixel_response")
 
 # =====================================================================
-# Fig. 4 -- the dead zone, cross-domain (UIEB), one full-width row.
+# Fig. 5 -- the dead zone, cross-domain (UIEB), one full-width row.
 # Merged into a single float: three panels across \textwidth keep every label
 # at the authored 7 pt, whereas two panels side by side in half-width
 # minipages forced a 2.4x downscale and left the legends at ~3 pt.
@@ -284,11 +364,13 @@ for j, (ds, title) in enumerate(zip(["EUVP_域内", "UIEB_跨域"],
     ax.legend(loc="best", handlelength=1.5, labelspacing=0.25, borderaxespad=0.2)
     ax.invert_xaxis()
     ax.text(-0.20, 1.06, "bc"[j], transform=ax.transAxes, fontsize=9, fontweight="bold")
-save(fig, "fig4_deadzone")
+save(fig, "fig5_deadzone")
 
 # =====================================================================
-# Fig. 5 -- degradation response profiles. Solid = cross-domain (UIEB),
+# Fig. 6 -- degradation response profiles.  Solid = cross-domain (UIEB),
 # pale dashed = in-domain (EUVP) reference, one legend entry for the family.
+# The severity axis runs S1 (heaviest, left) -> S4 (lightest, right), as in
+# Fig. 5: profile() bins at the contrast quartiles, so index 0 is S1.
 # =====================================================================
 def profile(d):
     c = d["contrast"]
@@ -303,33 +385,76 @@ def profile(d):
     return e, se, sn
 
 
-rev = lambda v: [v[3], v[2], v[1], v[0]]
-eU, seU, snU = (rev(a) for a in profile(dU))
-eE, seE, snE = (rev(a) for a in profile(dE))
+eU, seU, snU = profile(dU)          # index 0 = S1 (heaviest), 3 = S4 (lightest)
+eE, seE, snE = profile(dE)
 xs4 = np.arange(4)
-fig, ax = plt.subplots(figsize=(3.87, 2.05))
-ax.plot(xs4, [v / eU[0] for v in eU], color=DARK, marker="o", ms=3, lw=1.5, label="error")
-ax.plot(xs4, [v / snU[0] for v in snU], color=BLUE, marker="s", ms=3, lw=1.5,
+fig, ax = plt.subplots(figsize=(3.87, 2.00))
+ax.plot(xs4, [v / eU[3] for v in eU], color=DARK, marker="o", ms=3, lw=1.5, label="error")
+ax.plot(xs4, [v / snU[3] for v in snU], color=BLUE, marker="s", ms=3, lw=1.5,
         label="Ensemble $\\sigma$")
-ax.plot(xs4, [v / seU[0] for v in seU], color=RED, marker="^", ms=3, lw=1.5, label="EDL $\\sigma$")
-ax.plot(xs4, [v / eE[0] for v in eE], color=DARK, lw=1.0, ls="--", alpha=0.7)
-ax.plot(xs4, [v / snE[0] for v in snE], color=BLUE, lw=1.0, ls="--", alpha=0.7)
-ax.plot(xs4, [v / seE[0] for v in seE], color=RED, lw=1.0, ls="--", alpha=0.7)
+ax.plot(xs4, [v / seU[3] for v in seU], color=RED, marker="^", ms=3, lw=1.5, label="EDL $\\sigma$")
+ax.plot(xs4, [v / eE[3] for v in eE], color=DARK, lw=1.0, ls="--", alpha=0.7)
+ax.plot(xs4, [v / snE[3] for v in snE], color=BLUE, lw=1.0, ls="--", alpha=0.7)
+ax.plot(xs4, [v / seE[3] for v in seE], color=RED, lw=1.0, ls="--", alpha=0.7)
 ax.plot([], [], color="0.35", lw=1.0, ls="--", label="in-domain reference")
 ax.axhline(1.0, color="0.8", lw=0.6)
-ax.annotate("$\\times$1.73", xy=(3.05, 1.72), fontsize=6.4, ha="right", va="bottom", color=DARK)
-ax.annotate("$\\times$1.56", xy=(3.05, 1.55), fontsize=6.4, ha="right", va="bottom", color=BLUE)
-ax.annotate("flat ($\\times$0.96)", xy=(2.5, 0.96), xytext=(1.85, 0.80), fontsize=6.4,
+ax.annotate("$\\times$1.73", xy=(0.05, 1.735), fontsize=6.4, ha="left", va="bottom", color=DARK)
+ax.annotate("$\\times$1.56", xy=(0.05, 1.555), fontsize=6.4, ha="left", va="bottom", color=BLUE)
+ax.annotate("flat ($\\times$0.96)", xy=(1.62, 0.955), xytext=(1.35, 0.795), fontsize=6.4,
             color=RED, ha="center", va="bottom",
             arrowprops=dict(arrowstyle="->", lw=0.7, color=RED,
                             connectionstyle="arc3,rad=-0.25"))
 ax.set_xticks(xs4)
-ax.set_xticklabels(["S4", "S3", "S2", "S1"])
+ax.set_xticklabels(["S1", "S2", "S3", "S4"])
 ax.set_xlim(-0.25, 3.25)
 ax.set_xlabel("input-contrast quartile   (heavier degradation $\\leftarrow$)")
 ax.set_ylabel("value relative to lightest quartile")
-ax.set_ylim(0.7, 1.95)
-ax.legend(loc="upper left", handlelength=1.7, labelspacing=0.26, borderaxespad=0.2)
-save(fig, "fig5_response")
+ax.set_ylim(0.72, 1.90)
+ax.legend(loc="upper right", handlelength=1.7, labelspacing=0.26, borderaxespad=0.2)
+save(fig, "fig6_response")
+
+# =====================================================================
+# Fig. 7 -- where the blindness sits: the NIG evidence parameters.
+# Same severity axis and same normalization as Fig. 6, so the two panels read
+# as one argument: the error grows 73% while alpha and beta move by a few
+# percent and, crucially, not monotonically in severity -- the residual
+# variation cannot encode severity.  Only point estimates exist in the
+# records (stratum means, n ~ 111), so no interval is drawn here.
+# =====================================================================
+hs = hiv["baseline"]["strata"]           # S1 (heaviest) .. S4 (lightest)
+al = np.array([s["alpha"] for s in hs])
+be = np.array([s["beta"] for s in hs])
+er = np.array([s["err"] for s in hs])
+def _span(v):
+    return 100.0 * (v.max() - v.min()) / v.mean()
+
+
+print("  fig7 relativised: alpha %s  (span %.1f%%)" % (np.round(al / al[3], 3), _span(al / al[3])))
+print("  fig7 relativised: beta  %s  (span %.1f%%)" % (np.round(be / be[3], 3), _span(be / be[3])))
+print("  fig7 relativised: error %s  (span %.1f%%)" % (np.round(er / er[3], 3), _span(er / er[3])))
+
+fig, ax = plt.subplots(figsize=(3.87, 1.85))
+ax.axhspan(0.95, 1.05, color="0.94", zorder=0)
+ax.text(2.05, 1.052, "5% band", fontsize=6, color="0.45", ha="center", va="bottom")
+ax.plot(xs4, er / er[3], color=DARK, marker="o", ms=3.2, lw=1.5, label="error")
+ax.plot(xs4, al / al[3], color=RED, marker="s", ms=3.2, lw=1.4, label="$\\alpha$ (evidence)")
+ax.plot(xs4, be / be[3], color=RED, marker="v", ms=3.2, lw=1.2, ls="--",
+        mfc="white", label="$\\beta$ (evidence)")
+ax.axhline(1.0, color="0.8", lw=0.6, zorder=0)
+ax.annotate("$\\times$1.73", xy=(0.06, 1.742), fontsize=6.4, ha="left", va="bottom",
+            color=DARK, fontweight="bold")
+ax.annotate("$\\alpha$, $\\beta$: flat and not\nmonotone in severity",
+            xy=(2.0, 1.028), xytext=(1.28, 1.155), fontsize=6.4, color=RED,
+            ha="center", va="bottom",
+            arrowprops=dict(arrowstyle="-", lw=0.6, color=RED,
+                            connectionstyle="arc3,rad=-0.2"))
+ax.set_xticks(xs4)
+ax.set_xticklabels(["S1", "S2", "S3", "S4"])
+ax.set_xlim(-0.25, 3.25)
+ax.set_ylim(0.90, 1.85)
+ax.set_xlabel("input-contrast quartile   (heavier degradation $\\leftarrow$)")
+ax.set_ylabel("value relative to lightest quartile")
+ax.legend(loc="upper right", handlelength=1.7, labelspacing=0.26, borderaxespad=0.2)
+save(fig, "fig7_evidence")
 
 print("figures written to", OUT, "and mirrored to", TEXFIG)

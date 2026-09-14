@@ -3,7 +3,7 @@
 Code, protocol, and per-image audit records for
 
 > **The $\sigma$ Dead Zone in Auditing Pixel-wise Uncertainty for Underwater Image Restoration**
-> Xiangmiao Yu, Jimei University — *submitted to IEEE TCSVT*
+> Xiangmiao Yu, Jimei University
 
 This repository accompanies an **audit** of the uncertainty quantification (UQ) paradigms that
 already ship with underwater image restoration methods. It does not propose a new UQ mechanism.

@@ -1,0 +1,20 @@
+{
+ "euvp": {
+  "set": "EUVP",
+  "n": 1000,
+  "identity_mae": 0.11431,
+  "identity_psnr": 17.126
+ },
+ "uieb": {
+  "set": "UIEB",
+  "n": 445,
+  "identity_mae": 0.11436,
+  "identity_psnr": 17.875
+ },
+ "lsui": {
+  "set": "LSUI",
+  "n": 445,
+  "identity_mae": 0.08437,
+  "identity_psnr": 19.884
+ }
+}

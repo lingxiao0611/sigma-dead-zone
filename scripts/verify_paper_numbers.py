@@ -77,6 +77,8 @@ def main():
     ENSR = load(rec, "ensemble_recalibration.json")
     XD = load(rec, "crossdomain_uieb.json")
     FS = load(rec, "fewshot_recal_uieb.json")
+    NL = load(rec, "naive_levels.json")
+    IC = load(rec, "infer_cost.json")
     COV = load(rec, "coverage_stratified.json")
     REJ = load(rec, "rejection_stage4.json")
     BOOT = load(rec, "bootstrap_ci.json")
@@ -414,6 +416,32 @@ def main():
     # Sec. VI-D: error and correction scale together
     chk("VI-D MAE in-domain 0.054", dig(EDLR, "test_raw/mae"), 0.054, 5e-4, s)
     chk("VI-D MAE cross 0.114", dig(XD, "edl/raw/mae"), 0.114, 5e-4, s)
+    # Sec. VI-D: both water bodies present the same amount to correct, so the error
+    # increase above is not an artifact of differing reference construction.
+    chk("VI-D identity MAE EUVP 0.1143", dig(NL, "euvp/identity_mae"), 0.1143, 5e-4,
+        "naive_levels.json")
+    chk("VI-D identity MAE UIEB 0.1144", dig(NL, "uieb/identity_mae"), 0.1144, 5e-4,
+        "naive_levels.json")
+
+    # --------------------------------------- Table VIII: measured inference cost
+    # Every cell of the deployment-cost table traces to outputs/infer_cost.json,
+    # measured on one RTX 3090 at 256x256, batch 1, fp32.
+    def cost(i, label, params, ms, mem, passes):
+        chk("VIII %s params M" % label, dig(IC, "arms/%d/params_M" % i), params, 0.005,
+            "infer_cost.json")
+        chk("VIII %s ms per img" % label, dig(IC, "arms/%d/ms_per_image" % i), ms, 0.005,
+            "infer_cost.json")
+        chk("VIII %s passes" % label, dig(IC, "arms/%d/passes_per_image" % i), passes, 0,
+            "infer_cost.json")
+        chk("VIII %s peak mem MB" % label, dig(IC, "arms/%d/peak_mem_MB" % i), mem, 0.6,
+            "infer_cost.json")
+
+    cost(0, "FUnIE det", 7.02, 1.004, 78.2, 1)
+    cost(3, "FUnIE EDL", 7.03, 1.033, 110.2, 1)
+    cost(4, "FUnIE ENS", 35.11, 4.692, 239.6, 5)
+    cost(2, "FUnIE MC-BN", 7.02, 31.95, 100.0, 30)
+    cost(5, "U-shape det", 31.59, 24.112, 406.9, 1)
+    cost(6, "U-shape EDL", 31.59, 23.58, 528.4, 1)
 
     # --------------------------------------- figure captions, from the arrays
     # The response ratios in the Fig. 4/Fig. 6 captions normalize at the lightest contrast

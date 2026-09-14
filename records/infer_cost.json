@@ -1,0 +1,98 @@
+{
+ "gpu": "NVIDIA GeForce RTX 3090",
+ "torch": "2.5.1+cu121",
+ "resolution": "256x256",
+ "dtype": "float32",
+ "arms": [
+  {
+   "arm": "FUnIE det",
+   "passes_per_image": 1,
+   "params_M": 7.0222,
+   "bs": 1,
+   "latency_ms": 1.004,
+   "ms_per_image": 1.004,
+   "img_per_s": 995.9,
+   "peak_mem_MB": 78.2
+  },
+  {
+   "arm": "FUnIE det",
+   "passes_per_image": 1,
+   "params_M": 7.0222,
+   "bs": 8,
+   "latency_ms": 6.981,
+   "ms_per_image": 0.873,
+   "img_per_s": 1145.9,
+   "peak_mem_MB": 431.3
+  },
+  {
+   "arm": "FUnIE MC-BN (T=30)",
+   "passes_per_image": 30,
+   "params_M": 7.0222,
+   "bs": 1,
+   "latency_ms": 31.95,
+   "ms_per_image": 31.95,
+   "img_per_s": 31.3,
+   "peak_mem_MB": 100.0
+  },
+  {
+   "arm": "FUnIE + EDL",
+   "passes_per_image": 1,
+   "params_M": 7.0314,
+   "bs": 1,
+   "latency_ms": 1.033,
+   "ms_per_image": 1.033,
+   "img_per_s": 968.2,
+   "peak_mem_MB": 110.2
+  },
+  {
+   "arm": "FUnIE + ensemble (5)",
+   "passes_per_image": 5,
+   "params_M": 35.111,
+   "bs": 1,
+   "latency_ms": 4.692,
+   "ms_per_image": 4.692,
+   "img_per_s": 213.1,
+   "peak_mem_MB": 239.6
+  },
+  {
+   "arm": "U-shape det",
+   "passes_per_image": 1,
+   "params_M": 31.5913,
+   "bs": 1,
+   "latency_ms": 24.112,
+   "ms_per_image": 24.112,
+   "img_per_s": 41.5,
+   "peak_mem_MB": 406.9
+  },
+  {
+   "arm": "U-shape + EDL",
+   "passes_per_image": 1,
+   "params_M": 31.5915,
+   "bs": 1,
+   "latency_ms": 23.58,
+   "ms_per_image": 23.58,
+   "img_per_s": 42.4,
+   "peak_mem_MB": 528.4
+  }
+ ],
+ "probe": {
+  "puie_mc": [
+   "Compute_z",
+   "ConvBlock",
+   "Decoder",
+   "Encoder",
+   "PerceptionLoss",
+   "ResBlock",
+   "Up"
+  ],
+  "puie_mp": [
+   "Compute_z",
+   "ConvBlock",
+   "Decoder",
+   "Encoder",
+   "PerceptionLoss",
+   "ResBlock",
+   "Up"
+  ]
+ }
+}

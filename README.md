@@ -68,6 +68,7 @@ into `outputs/` on the machine that runs them.
 | `train_funie_gauss.py`, `train_mamba_fp32.py` | Sec. VI-B — Gaussian-head control, Mamba-UIE precision reference |
 | `eval_coverage_stratified.py` | Sec. V-C, V-E, Figs. 3–4 — stratified coverage and the dead zone |
 | `eval_crossdomain_uieb.py` | Sec. V-D, Table IV — ratio inflation across water bodies |
+| `eval_transfer_direction.py`, `build_transfer_directions.py` | Sec. V-D, Sec. VII — the reciprocal orientation and the matched-budget control, joined into one record |
 | `eval_fewshot_recal.py` | Sec. V-D, Fig. 2(b) — few-shot recalibration convergence |
 | `eval_recalibration_edl.py`, `eval_ensemble_recal.py` | Sec. V-C, Table II — the single multiplicative scalar fitted on a calibration split |
 | `eval_calibration_edl.py`, `eval_ensemble_calib.py` | Table II — uncertainty-toolbox calibration on the EUVP validation block |
@@ -94,7 +95,7 @@ into `outputs/` on the machine that runs them.
 
 ## Audit records
 
-`records/` holds the machine-readable output of the audit: 37 JSON files, one per experiment or
+`records/` holds the machine-readable output of the audit: 41 JSON files, one per experiment or
 per table. These are the files quoted in the "released records" notes in the paper, including the
 per-proxy tables behind the stratification robustness check of Sec. V-B. Each file is
 self-describing; keys mirror the metric names used in the text.
@@ -102,15 +103,16 @@ self-describing; keys mirror the metric names used in the text.
 Every table in the paper has a backing file here, and so does every headline number in the running
 text. The tables map to records as follows. Table I is `table1_accuracy.json`. Table II is
 `edl_recalibration.json`, `ensemble_recalibration.json` and `puie_eval.json`. Table III is
-`proper_scoring_rules.json`. Table IV is `crossdomain_uieb.json` and `fewshot_recal_uieb.json`.
-Table V is `rejection_stage4.json` and `bootstrap_ci.json`. Table VI is `ushape_stratified.json`,
-`ushape_rejection_stage4.json`, `ushape_ens_audit.json` and `ruie_severity_rho.json`. Table VII
+`proper_scoring_rules.json`. Table IV is `crossdomain_uieb.json`, `fewshot_recal_uieb.json` and
+`transfer_directions.json`. Table V is `rejection_stage4.json` and `bootstrap_ci.json`. Table VI is
+`ushape_stratified.json`, `ushape_rejection_stage4.json`, `ushape_ens_audit.json` and
+`ruie_severity_rho.json`. Table VII
 states the deployment rule in words, and its claims are the table values above; the mechanism
 section that justifies it runs on `gauss_audit.json`, `head_intervention.json`,
 `puie_ablation.json` and `reffree_response.json`.
 
 To check that claim rather than trust it, run the verifier from the repository root. It recomputes
-186 quantities — every value in the seven tables, the confidence intervals, and the ratios quoted
+202 quantities — every value in the seven tables, the confidence intervals, and the ratios quoted
 in the figure captions — from `records/` and prints any disagreement:
 
 ```bash

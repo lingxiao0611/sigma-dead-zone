@@ -99,6 +99,7 @@ def main():
     UER = load(rec, "ushape_ens_reffree.json")
     UEG = load(rec, "ushape_ens_reffree_grades.json")
     RSR = load(rec, "ruie_severity_rho.json")
+    TD = load(rec, "transfer_directions.json")
 
     # ---------------------------------------------------------------- Table I
     t1 = T1["rows"]
@@ -197,6 +198,44 @@ def main():
     chk("V-D ENS inflation x1.48", dig(XD, "ensemble/ratio_domain") / ENSR["ratio"], 1.48, 5e-3, s)
     chk("V-D PUIE inflation x1.31",
         dig(PUIE, "uieb_cross/ratio_domain") / dig(PUIE, "euvp_val/ratio"), 1.31, 5e-3, "puie_eval.json")
+    # The paper direction recomputed end to end; reproducing it is what licenses
+    # reading the reciprocal orientation and the matched-budget control.
+    chk("V-D re-anchor EDL 3.630 -> 7.683",
+        dig(TD, "runs/euvp_src/arms/edl/ratio_cross_domain"), 7.683, 5e-4, "transfer_directions.json")
+    chk("V-D re-anchor ENS 3.838 -> 5.661",
+        dig(TD, "runs/euvp_src/arms/ensemble/ratio_cross_domain"), 5.661, 5e-4, "transfer_directions.json")
+    chk("V-D re-anchor cross AURC EDL 0.1084",
+        dig(TD, "runs/euvp_src/arms/edl/aurc_cross_domain"), 0.1084, 5e-5, "transfer_directions.json")
+    chk("V-D re-anchor cross AURC ENS 0.0973",
+        dig(TD, "runs/euvp_src/arms/ensemble/aurc_cross_domain"), 0.0973, 5e-5, "transfer_directions.json")
+    # Reciprocal orientation, the second half of the transfer claim
+    chk("V-D reverse EDL inflation x1.41",
+        dig(TD, "runs/uieb_src/arms/edl/inflation"), 1.41, 5e-3, "transfer_directions.json")
+    chk("V-D reverse ENS inflation x1.35",
+        dig(TD, "runs/uieb_src/arms/ensemble/inflation"), 1.35, 5e-3, "transfer_directions.json")
+    chk("V-D reverse cross AURC EDL 0.0861",
+        dig(TD, "runs/uieb_src/arms/edl/aurc_cross_domain"), 0.0861, 5e-5, "transfer_directions.json")
+    chk("V-D reverse cross AURC ENS 0.0810",
+        dig(TD, "runs/uieb_src/arms/ensemble/aurc_cross_domain"), 0.0810, 5e-5, "transfer_directions.json")
+    chk("V-D reverse ensemble leads cross-domain",
+        dig(TD, "runs/uieb_src/ensemble_leads_cross_domain"), True, src="transfer_directions.json")
+    # Matched-budget control, the bound on the ensemble's advantage
+    chk("V-D matched-budget EDL inflation x1.94",
+        dig(TD, "runs/euvp700/arms/edl/inflation"), 1.94, 5e-3, "transfer_directions.json")
+    chk("V-D matched-budget ENS inflation x1.97",
+        dig(TD, "runs/euvp700/arms/ensemble/inflation"), 1.97, 5e-3, "transfer_directions.json")
+    chk("V-D matched-budget ENS cross AURC 0.1051",
+        dig(TD, "runs/euvp700/arms/ensemble/aurc_cross_domain"), 0.1051, 5e-5, "transfer_directions.json")
+    chk("V-D matched-budget EDL cross AURC 0.1000",
+        dig(TD, "runs/euvp700/arms/edl/aurc_cross_domain"), 0.1000, 5e-5, "transfer_directions.json")
+    chk("V-D matched-budget EDL leads cross-domain",
+        not dig(TD, "runs/euvp700/ensemble_leads_cross_domain"), True, src="transfer_directions.json")
+    chk("V-D every arm and orientation inflates",
+        dig(TD, "all_orientations_inflate"), True, src="transfer_directions.json")
+    chk("V-D quoted range x1.31-x2.17 covers all six inflations",
+        all(1.31 <= dig(TD, "inflation_range/%s/0" % m) and
+            dig(TD, "inflation_range/%s/1" % m) <= 2.17 for m in ("edl", "ensemble")),
+        True, src="transfer_directions.json")
     chk("V-D EDL raw RMS-CE 0.460", dig(FS, "edl/reference/raw_rms"), 0.460, 5e-4, s)
     for n, erow, nrow in ((5, (0.049, 0.016), (0.065, 0.021)),
                           (50, (0.039, 0.011), (0.060, 0.009)),

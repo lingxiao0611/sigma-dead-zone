@@ -1,0 +1,106 @@
+{
+ "table": "Sec. V-D transfer axis, both orientations and a matched-budget control; one estimator, one seed, one metric implementation",
+ "runs": {
+  "euvp_src": {
+   "note": "paper direction, full source budget",
+   "source": "EUVP",
+   "target": "UIEB",
+   "protocol": {
+    "source_train": 9435,
+    "source_cal": 500,
+    "source_test": 500,
+    "target_cal": 445,
+    "target_test": 445
+   },
+   "arms": {
+    "edl": {
+     "ratio_in_domain": 3.6295404155426048,
+     "ratio_cross_domain": 7.683152454852276,
+     "inflation": 2.116838931439111,
+     "aurc_in_domain": 0.04015561505577039,
+     "aurc_cross_domain": 0.10836512475736645
+    },
+    "ensemble": {
+     "ratio_in_domain": 3.8381347045060648,
+     "ratio_cross_domain": 5.66130103555799,
+     "inflation": 1.4750136385029642,
+     "aurc_in_domain": 0.04011229283953199,
+     "aurc_cross_domain": 0.0973457139011388
+    }
+   },
+   "ensemble_advantage_cross_domain": 0.10168779744313977,
+   "ensemble_leads_cross_domain": true
+  },
+  "euvp700": {
+   "note": "paper direction, source budget matched to UIEB's 700 pairs",
+   "source": "EUVP",
+   "target": "UIEB",
+   "protocol": {
+    "source_train": 700,
+    "source_cal": 500,
+    "source_test": 500,
+    "target_cal": 445,
+    "target_test": 445
+   },
+   "arms": {
+    "edl": {
+     "ratio_in_domain": 1.6559277133325043,
+     "ratio_cross_domain": 3.2084900126150497,
+     "inflation": 1.937578546927064,
+     "aurc_in_domain": 0.04275144918425449,
+     "aurc_cross_domain": 0.09995536154764292
+    },
+    "ensemble": {
+     "ratio_in_domain": 3.5597150035176,
+     "ratio_cross_domain": 7.021087997317388,
+     "inflation": 1.9723736283324274,
+     "aurc_in_domain": 0.04624224902302949,
+     "aurc_cross_domain": 0.10512158361402611
+    }
+   },
+   "ensemble_advantage_cross_domain": -0.05168529217835654,
+   "ensemble_leads_cross_domain": false
+  },
+  "uieb_src": {
+   "note": "reciprocal orientation, UIEB's full paired budget",
+   "source": "UIEB",
+   "target": "EUVP",
+   "protocol": {
+    "source_train": 700,
+    "source_cal": 95,
+    "source_test": 95,
+    "target_cal": 500,
+    "target_test": 500
+   },
+   "arms": {
+    "edl": {
+     "ratio_in_domain": 1.9422399698480115,
+     "ratio_cross_domain": 2.743746025597768,
+     "inflation": 1.4126709717607542,
+     "aurc_in_domain": 0.06863126904020674,
+     "aurc_cross_domain": 0.08613523991295359
+    },
+    "ensemble": {
+     "ratio_in_domain": 2.7182125521903218,
+     "ratio_cross_domain": 3.668407955889374,
+     "inflation": 1.349566262922813,
+     "aurc_in_domain": 0.07095755826363763,
+     "aurc_cross_domain": 0.08103380040024441
+    }
+   },
+   "ensemble_advantage_cross_domain": 0.05922592794615287,
+   "ensemble_leads_cross_domain": true
+  }
+ },
+ "inflation_range": {
+  "edl": [
+   1.4126709717607542,
+   2.116838931439111
+  ],
+  "ensemble": [
+   1.349566262922813,
+   1.9723736283324274
+  ]
+ },
+ "all_orientations_inflate": true
+}

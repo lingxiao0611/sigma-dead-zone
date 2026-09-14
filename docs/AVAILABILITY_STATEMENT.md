@@ -30,7 +30,7 @@ URL than at the phrase — the current wording is consistent either way:
   `ensemble_recalibration.json`), the bootstrap intervals (`bootstrap_ci.json`), the Gaussian-head
   control (`gauss_audit.json`), the U-shape ensemble arm (`ushape_ens_audit.json`,
   `ushape_ens_reffree_grades.json`), and the joined severity-ordering row of Table VI
-  (`ruie_severity_rho.json`). `scripts/verify_paper_numbers.py` recomputes 186 of those quantities
+  (`ruie_severity_rho.json`). `scripts/verify_paper_numbers.py` recomputes 202 of those quantities
   from the records and is the check to run before submitting. The per-pixel arrays that the figures
   are drawn from are still only on Zenodo, so keep the wording about "per-image audit records" and do
   not widen it to "every figure".

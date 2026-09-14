@@ -63,7 +63,7 @@ reverts to its authors' batch size of 1.
 ## 5. Expected outputs
 
 Each evaluation script writes JSON into `outputs/`; `records/` mirrors the local `outputs/` tree and
-holds every JSON the paper cites. The two trees are kept byte-identical at 37 files, and every one
+holds every JSON the paper cites. The two trees are kept byte-identical at 41 files, and every one
 of those files has a producer in `scripts/` — `eval_recalibration_edl.py` and
 `eval_calibration_edl.py` for the two EDL calibration records, `collect_table1_accuracy.py` for
 Table I, and the `eval_*` scripts for the rest. Byte-identical reproduction is not guaranteed across
@@ -77,7 +77,7 @@ Rather than take the paper's arithmetic on trust, re-derive it:
 python scripts/verify_paper_numbers.py
 ```
 
-That reads `records/` and recomputes 186 quantities — every cell of the seven tables, the bootstrap
+That reads `records/` and recomputes 202 quantities — every cell of the seven tables, the bootstrap
 confidence intervals, the ratio inflations, and the ratios annotated in the Fig. 4 and Fig. 6
 captions — printing any value that disagrees with the paper and exiting non-zero if there is one.
 Pass `--arrays outputs` to include the caption ratios that come from the per-pixel arrays, and

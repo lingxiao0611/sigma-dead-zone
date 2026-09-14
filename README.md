@@ -84,7 +84,8 @@ into `outputs/` on the machine that runs them.
 | `eval_sigma_severity.py` | Sec. V-E, Fig. 5 — degradation response profiles |
 | `eval_puie_*.py`, `eval_mcbn_recal.py`, `eval_bem_calib.py` | Sec. VI-C — the paradigms outside the main comparison |
 | `eval_mambauie_*.py`, `eval_mambauie_psnr.py` | Sec. V-A — Mamba-UIE accuracy reference |
-| `eval_ushape_calib.py`, `eval_ushape_strat.py`, `eval_ushape_crossdomain.py`, `eval_ushape_recal.py`, `eval_ushape_rejection.py`, `eval_ushape_ens_audit.py` | Sec. V-G, Table VII — backbone robustness |
+| `eval_ushape_calib.py`, `eval_ushape_strat.py`, `eval_ushape_crossdomain.py`, `eval_ushape_recal.py`, `eval_ushape_rejection.py`, `eval_ushape_ens_audit.py`, `eval_ushape_ens_rf_grades.py` | Sec. V-G, Table VI — backbone robustness, including the reference-free severity-ordering row |
+| `build_ruie_severity_rho.py` | Table VI, last row — joins the four arms' severity correlations so one estimator fills the whole row |
 | `port_risk_coverage.py` | Generates `uq/tu_risk_coverage.py`: TorchUncertainty's AURC/AUGRC core adapted from classification to regression |
 | `make_figures.py` | Every figure in the paper, from `records/*.json` and the per-pixel arrays; writes vector PDF plus PNG into `figures/` |
 | `verify_paper_numbers.py` | Not a figure or a table: re-derives every headline number in the text from `records/` and reports any drift |
@@ -93,7 +94,7 @@ into `outputs/` on the machine that runs them.
 
 ## Audit records
 
-`records/` holds the machine-readable output of the audit: 35 JSON files, one per experiment or
+`records/` holds the machine-readable output of the audit: 37 JSON files, one per experiment or
 per table. These are the files quoted in the "released records" notes in the paper, including the
 per-proxy tables behind the stratification robustness check of Sec. V-B. Each file is
 self-describing; keys mirror the metric names used in the text.
@@ -103,11 +104,13 @@ text. The tables map to records as follows. Table I is `table1_accuracy.json`. T
 `edl_recalibration.json`, `ensemble_recalibration.json` and `puie_eval.json`. Table III is
 `proper_scoring_rules.json`. Table IV is `crossdomain_uieb.json` and `fewshot_recal_uieb.json`.
 Table V is `rejection_stage4.json` and `bootstrap_ci.json`. Table VI is `ushape_stratified.json`,
-`ushape_rejection_stage4.json` and `ushape_ens_audit.json`. Table VII draws on those plus
-`gauss_audit.json`, `head_intervention.json` and `reffree_response.json`.
+`ushape_rejection_stage4.json`, `ushape_ens_audit.json` and `ruie_severity_rho.json`. Table VII
+states the deployment rule in words, and its claims are the table values above; the mechanism
+section that justifies it runs on `gauss_audit.json`, `head_intervention.json`,
+`puie_ablation.json` and `reffree_response.json`.
 
 To check that claim rather than trust it, run the verifier from the repository root. It recomputes
-181 quantities — every value in the seven tables, the confidence intervals, and the ratios quoted
+186 quantities — every value in the seven tables, the confidence intervals, and the ratios quoted
 in the figure captions — from `records/` and prints any disagreement:
 
 ```bash
@@ -120,10 +123,14 @@ It exits non-zero on any mismatch, so it can gate a release. With the arrays pre
 reproduces the response ratios in the Fig. 4 and Fig. 6 captions and the $\alpha$/$\beta$ ranges
 of Fig. 7 from the per-pixel data.
 
-Two records are worth calling out because they are easy to mistake for inconsistencies.
-`records/ushape_ens_audit.json` is the protocol-corrected U-shape ensemble run; and the U-shape
+Three records are worth calling out because they are easy to mistake for inconsistencies.
+`records/ushape_ens_audit.json` is the protocol-corrected U-shape ensemble run; the U-shape
 cross-domain ratio appears in both `ushape_crossdomain_uieb.json` (6.673, the value Table VI
-quotes) and `ushape_stratified.json` (6.683), two runs of the same quantity that differ by 0.01.
+quotes) and `ushape_stratified.json` (6.683), two runs of the same quantity that differ by 0.01;
+and `ushape_ens_reffree.json` holds a pooled per-image correlation against a contrast proxy that
+once filled Table VI's severity cell. That cell is now computed across grades like the other three
+in its row, see `ruie_severity_rho.json`, which keeps the superseded number and the reason for the
+substitution under its `superseded` key.
 
 Raw per-pixel $\sigma$ and error arrays (85 MB and 76 MB compressed, EUVP and UIEB) are archived
 at `https://doi.org/<ZENODO_DOI>` rather than committed here.

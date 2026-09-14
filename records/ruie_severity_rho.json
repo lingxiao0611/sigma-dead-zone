@@ -1,0 +1,75 @@
+{
+ "table": "Table VI, final row: rho(sigma, severity) over RUIE-UIQS grades A-E",
+ "estimator": "spearman(severity_rank 0..4, per-grade mean sigma)",
+ "severity_rank": {
+  "A": 0,
+  "B": 1,
+  "C": 2,
+  "D": 3,
+  "E": 4
+ },
+ "n_per_grade": 200,
+ "models": {
+  "FUnIE+EDL": {
+   "sigma_per_grade": {
+    "A": 0.01591895530000329,
+    "B": 0.014616668643429875,
+    "C": 0.014095841548405588,
+    "D": 0.01309605035930872,
+    "E": 0.012924525500275195
+   },
+   "rho": -0.9999999999999999,
+   "ratio_E_over_A": 0.8118953321184665,
+   "source": "reffree_response.json:RUIE_*/sigma_edl"
+  },
+  "U-shape+EDL": {
+   "sigma_per_grade": {
+    "A": 0.020632594926282763,
+    "B": 0.01958706651814282,
+    "C": 0.019458265686407687,
+    "D": 0.018761909455060958,
+    "E": 0.019727560561150312
+   },
+   "rho": -0.39999999999999997,
+   "ratio_E_over_A": 0.9561356984729257,
+   "source": "reffree_response.json:RUIE_*/sigma_ushape_edl"
+  },
+  "FUnIE+ENS": {
+   "sigma_per_grade": {
+    "A": 0.0176525886869058,
+    "B": 0.01619074192363769,
+    "C": 0.017171187871135772,
+    "D": 0.02027451884932816,
+    "E": 0.025738137532025574
+   },
+   "rho": 0.7,
+   "ratio_E_over_A": 1.458037571062731,
+   "source": "reffree_response.json:RUIE_*/sigma_ens"
+  },
+  "U-shape+ENS": {
+   "sigma_per_grade": {
+    "A": 0.021889008693397046,
+    "B": 0.019880208042450248,
+    "C": 0.02193983086384833,
+    "D": 0.024635495082475246,
+    "E": 0.02579767647664994
+   },
+   "rho": 0.8999999999999998,
+   "ratio_E_over_A": 1.1785676015758524,
+   "source": "ushape_ens_reffree_grades.json:grades/RUIE_*/sigma_ushape_ens"
+  }
+ },
+ "rho_row": {
+  "FUnIE+EDL": -0.9999999999999999,
+  "U-shape+EDL": -0.39999999999999997,
+  "FUnIE+ENS": 0.7,
+  "U-shape+ENS": 0.8999999999999998
+ },
+ "superseded": {
+  "U-shape+ENS": {
+   "old_value": 0.14097712196802187,
+   "old_source": "ushape_ens_reffree.json:reffree_spearman_sigma_vs_contrast",
+   "why": "pooled per-image rho(sigma, contrast proxy) over a flat 300-image draw spanning all grades, contrast taken as an unweighted channel mean, and a different model from the one the column names. Not comparable with the across-grade estimator the other three cells use, and its sign convention flips with the proxy direction."
+  }
+ }
+}

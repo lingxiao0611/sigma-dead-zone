@@ -1,0 +1,53 @@
+{
+ "method": "ENS@U-shape",
+ "n_members": 5,
+ "device": "cuda:0",
+ "protocol": "eval_reffree_response.py verbatim: first 200 sorted image filenames per UIQS grade, resize 256, sigma = population std across members / 2 averaged over pixels, contrast proxy = luminance-weighted (0.299/0.587/0.114) grayscale std",
+ "severity_rank": {
+  "A": 0,
+  "B": 1,
+  "C": 2,
+  "D": 3,
+  "E": 4
+ },
+ "grades": {
+  "RUIE_A": {
+   "n": 200,
+   "sigma_ushape_ens": 0.021889008693397046,
+   "sigma_std": 0.006064778990674014,
+   "contrast": 0.14015843806788325,
+   "non_image_files_skipped": 0
+  },
+  "RUIE_B": {
+   "n": 200,
+   "sigma_ushape_ens": 0.019880208042450248,
+   "sigma_std": 0.003531543688121523,
+   "contrast": 0.09495771082118154,
+   "non_image_files_skipped": 0
+  },
+  "RUIE_C": {
+   "n": 200,
+   "sigma_ushape_ens": 0.02193983086384833,
+   "sigma_std": 0.004546941245878825,
+   "contrast": 0.08647080285474658,
+   "non_image_files_skipped": 0
+  },
+  "RUIE_D": {
+   "n": 200,
+   "sigma_ushape_ens": 0.024635495082475246,
+   "sigma_std": 0.0050710509972050335,
+   "contrast": 0.07502786178141832,
+   "non_image_files_skipped": 0
+  },
+  "RUIE_E": {
+   "n": 200,
+   "sigma_ushape_ens": 0.02579767647664994,
+   "sigma_std": 0.007104904622637472,
+   "contrast": 0.08492067439481615,
+   "non_image_files_skipped": 0
+  }
+ },
+ "rho_grades_ushape_ens": 0.8999999999999998,
+ "rho_pooled_sigma_vs_contrast": -0.217997365997366,
+ "response_ratio_E_over_A": 1.1785676015758524
+}

@@ -97,6 +97,8 @@ def main():
     URE = load(rec, "ushape_edl_recalibration.json")
     UEA = load(rec, "ushape_ens_audit.json")
     UER = load(rec, "ushape_ens_reffree.json")
+    UEG = load(rec, "ushape_ens_reffree_grades.json")
+    RSR = load(rec, "ruie_severity_rho.json")
 
     # ---------------------------------------------------------------- Table I
     t1 = T1["rows"]
@@ -315,8 +317,19 @@ def main():
     chk("V-G U-shape ENS AURC margin 16.7%",
         (dig(UREJ, "UIEB (cross-domain)/edl/aurc") - dig(UEA, "UIEB/risk_coverage/aurc")) /
         dig(UREJ, "UIEB (cross-domain)/edl/aurc") * 100, 16.7, 0.05, s)
-    chk("V-G U-shape ENS reffree rho +0.14",
+    # The U-shape ensemble cell used to be filled by a pooled per-image correlation
+    # against a contrast proxy, which is not the estimator the other three cells use.
+    # It is now recomputed across grades like the rest; the old number stays checked
+    # so the substitution remains auditable.
+    chk("V-G U-shape ENS pooled rho +0.14 (superseded cell)",
         dig(UER, "reffree_spearman_sigma_vs_contrast"), 0.14, 5e-3, "ushape_ens_reffree.json")
+    chk("V-G U-shape ENS across-grade rho +0.90",
+        dig(UEG, "rho_grades_ushape_ens"), 0.90, 5e-3, "ushape_ens_reffree_grades.json")
+    chk("V-G U-shape ENS severity ratio E/A 1.18",
+        dig(UEG, "response_ratio_E_over_A"), 1.18, 5e-3, "ushape_ens_reffree_grades.json")
+    chk("V-G U-shape ENS pooled rho on the new draw is negative",
+        dig(UEG, "rho_pooled_sigma_vs_contrast") < 0, True,
+        src="ushape_ens_reffree_grades.json")
     # Table VII RUIE rho column: rank correlation between severity grade and mean sigma
     sig_e = [RF["RUIE_%s" % g]["sigma_edl"] for g in "ABCDE"]
     sig_n = [RF["RUIE_%s" % g]["sigma_ens"] for g in "ABCDE"]
@@ -334,6 +347,14 @@ def main():
     chk("T7 RUIE rho EDL/FUnIE -1.00", spearman(sig_e), -1.00, 5e-3, "reffree_response.json")
     chk("T7 RUIE rho EDL/U-shape -0.40", spearman(sig_us), -0.40, 5e-3, "reffree_response.json")
     chk("T7 RUIE rho ENS/FUnIE +0.70", spearman(sig_n), 0.70, 5e-3, "reffree_response.json")
+    sig_ue = [UEG["grades"]["RUIE_%s" % g]["sigma_ushape_ens"] for g in "ABCDE"]
+    chk("T7 RUIE rho ENS/U-shape +0.90", spearman(sig_ue), 0.90, 5e-3,
+        "ushape_ens_reffree_grades.json")
+    # all four cells must now agree with the joined row, which shares one estimator
+    chk("T7 row matches ruie_severity_rho.json",
+        max(abs(dig(RSR, "rho_row/%s" % m) - spearman(seq)) for m, seq in
+            [("FUnIE+EDL", sig_e), ("U-shape+EDL", sig_us), ("FUnIE+ENS", sig_n),
+             ("U-shape+ENS", sig_ue)]) <= 1e-9, True, src="ruie_severity_rho.json")
 
     # --------------------------------------------------------- Sec. VI-B
     s = "head_intervention.json / gauss_audit.json / puie_ablation.json"

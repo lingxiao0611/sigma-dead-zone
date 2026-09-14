@@ -64,10 +64,13 @@ into `outputs/` on the machine that runs them.
 | Script | Paper artifact |
 |---|---|
 | `train_ushape_baseline.py`, `train_ushape_edl.py`, `train_ushape_ens4090.py` | Sec. V-A, Table I — accuracy cost of the uncertainty mechanism, U-shape backbone |
+| `collect_table1_accuracy.py` | Table I — lifts the best-validation epoch of every run out of the per-epoch training logs |
 | `train_funie_gauss.py`, `train_mamba_fp32.py` | Sec. VI-B — Gaussian-head control, Mamba-UIE precision reference |
 | `eval_coverage_stratified.py` | Sec. V-C, V-E, Figs. 3–4 — stratified coverage and the dead zone |
 | `eval_crossdomain_uieb.py` | Sec. V-D, Table IV — ratio inflation across water bodies |
 | `eval_fewshot_recal.py` | Sec. V-D, Fig. 2(b) — few-shot recalibration convergence |
+| `eval_recalibration_edl.py`, `eval_ensemble_recal.py` | Sec. V-C, Table II — the single multiplicative scalar fitted on a calibration split |
+| `eval_calibration_edl.py`, `eval_ensemble_calib.py` | Table II — uncertainty-toolbox calibration on the EUVP validation block |
 | `eval_split_stability.py` | Sec. V-C — scalar stability over 30 random splits |
 | `eval_scoring_rules.py` | Sec. V-C, Table III — NLL and CRPS before and after recalibration |
 | `eval_rejection.py`, `eval_ushape_rejection.py` | Sec. V-F, Table V — rejection economics |
@@ -84,17 +87,43 @@ into `outputs/` on the machine that runs them.
 | `eval_ushape_calib.py`, `eval_ushape_strat.py`, `eval_ushape_crossdomain.py`, `eval_ushape_recal.py`, `eval_ushape_rejection.py`, `eval_ushape_ens_audit.py` | Sec. V-G, Table VII — backbone robustness |
 | `port_risk_coverage.py` | Generates `uq/tu_risk_coverage.py`: TorchUncertainty's AURC/AUGRC core adapted from classification to regression |
 | `make_figures.py` | Every figure in the paper, from `records/*.json` and the per-pixel arrays; writes vector PDF plus PNG into `figures/` |
+| `verify_paper_numbers.py` | Not a figure or a table: re-derives every headline number in the text from `records/` and reports any drift |
 
 ---
 
 ## Audit records
 
-`records/` holds the machine-readable output of the audit, one JSON per experiment. These are the
-files quoted in the "released records" notes in the paper — including the per-proxy tables behind
-the stratification robustness check of Sec. V-B. Each file is self-describing; keys mirror the
-metric names used in the text. Every table in the paper has a backing file here, the U-shape
-Transformer ensemble arm included (`records/ushape_ens_audit.json` and
-`records/ushape_ens_reffree.json`, produced by `scripts/eval_ushape_ens_audit.py`).
+`records/` holds the machine-readable output of the audit: 35 JSON files, one per experiment or
+per table. These are the files quoted in the "released records" notes in the paper, including the
+per-proxy tables behind the stratification robustness check of Sec. V-B. Each file is
+self-describing; keys mirror the metric names used in the text.
+
+Every table in the paper has a backing file here, and so does every headline number in the running
+text. The tables map to records as follows. Table I is `table1_accuracy.json`. Table II is
+`edl_recalibration.json`, `ensemble_recalibration.json` and `puie_eval.json`. Table III is
+`proper_scoring_rules.json`. Table IV is `crossdomain_uieb.json` and `fewshot_recal_uieb.json`.
+Table V is `rejection_stage4.json` and `bootstrap_ci.json`. Table VI is `ushape_stratified.json`,
+`ushape_rejection_stage4.json` and `ushape_ens_audit.json`. Table VII draws on those plus
+`gauss_audit.json`, `head_intervention.json` and `reffree_response.json`.
+
+To check that claim rather than trust it, run the verifier from the repository root. It recomputes
+181 quantities — every value in the seven tables, the confidence intervals, and the ratios quoted
+in the figure captions — from `records/` and prints any disagreement:
+
+```bash
+python scripts/verify_paper_numbers.py                       # reads records/
+python scripts/verify_paper_numbers.py --records outputs     # reads a working tree instead
+python scripts/verify_paper_numbers.py --arrays outputs      # also checks the Fig. 4/6/7 captions
+```
+
+It exits non-zero on any mismatch, so it can gate a release. With the arrays present it also
+reproduces the response ratios in the Fig. 4 and Fig. 6 captions and the $\alpha$/$\beta$ ranges
+of Fig. 7 from the per-pixel data.
+
+Two records are worth calling out because they are easy to mistake for inconsistencies.
+`records/ushape_ens_audit.json` is the protocol-corrected U-shape ensemble run; and the U-shape
+cross-domain ratio appears in both `ushape_crossdomain_uieb.json` (6.673, the value Table VI
+quotes) and `ushape_stratified.json` (6.683), two runs of the same quantity that differ by 0.01.
 
 Raw per-pixel $\sigma$ and error arrays (85 MB and 76 MB compressed, EUVP and UIEB) are archived
 at `https://doi.org/<ZENODO_DOI>` rather than committed here.

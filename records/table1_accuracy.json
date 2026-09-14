@@ -1,0 +1,80 @@
+{
+ "table": "I",
+ "caption": "Restoration accuracy with and without the uncertainty mechanism, under the identical 30-epoch budget (EUVP validation).",
+ "selection_rule": "best-validation epoch of each run; the paper reports the value at that epoch, not the final-epoch value",
+ "protocol": {
+  "epochs": 30,
+  "batch_size": 8,
+  "optimizer": "Adam",
+  "learning_rate": 0.0001,
+  "betas": [
+   0.5,
+   0.999
+  ],
+  "lr_schedule": null,
+  "weight_decay": null,
+  "precision": "fp32",
+  "input_normalization": [
+   -1,
+   1
+  ],
+  "augmentation": "single random horizontal flip, applied identically to input and reference",
+  "validation_split": "EUVP validation block used by the training pipeline"
+ },
+ "rows": {
+  "FUnIE-GAN (deterministic)": {
+   "psnr": 23.551897857666017,
+   "ssim": 0.8588002290725708,
+   "best_epoch": 29,
+   "epochs_recorded": 30,
+   "params_millions": 7.02
+  },
+  "FUnIE-GAN + EDL": {
+   "psnr": 23.548026306152344,
+   "ssim": 0.8601412439346313,
+   "best_epoch": 30,
+   "epochs_recorded": 30,
+   "params_millions": 7.02
+  },
+  "U-shape Transformer (deterministic)": {
+   "psnr": 22.566577789306642,
+   "ssim": 0.8154041771888733,
+   "best_epoch": 28,
+   "epochs_recorded": 30,
+   "params_millions": 31.6
+  },
+  "U-shape Transformer + EDL": {
+   "psnr": 22.535623840332033,
+   "ssim": 0.812243992805481,
+   "best_epoch": 27,
+   "epochs_recorded": 30,
+   "params_millions": 31.6
+  },
+  "Gaussian head (Sec. VI-B)": {
+   "psnr": 23.319681045532228,
+   "ssim": 0.8560506162643433,
+   "best_epoch": 27,
+   "epochs_recorded": 30,
+   "params_millions": 7.02
+  },
+  "Mamba-UIE (deterministic, fp32)": {
+   "psnr": 23.013366473513067,
+   "ssim": 0.8757753968238831,
+   "n_images": 1000,
+   "checkpoint": "epoch_30.pth",
+   "params_millions": null
+  }
+ },
+ "sigma_available": {
+  "FUnIE-GAN (deterministic)": false,
+  "FUnIE-GAN + EDL": true,
+  "U-shape Transformer (deterministic)": false,
+  "U-shape Transformer + EDL": true,
+  "Mamba-UIE (deterministic, fp32)": false
+ },
+ "notes": [
+  "Every row is retrained by us under one protocol; the numbers are not comparable to the original papers' settings, which use different splits, losses and budgets.",
+  "The best epoch falls in epochs 26-30 for every row, so no comparison here hangs on an under-trained model.",
+  "Mamba-UIE reaches 23.01 dB under this budget, below its published 27.13 dB, which uses a far larger budget and batch; it is used as an architecture-diverse precision reference only."
+ ]
+}

@@ -63,9 +63,25 @@ reverts to its authors' batch size of 1.
 ## 5. Expected outputs
 
 Each evaluation script writes JSON into `outputs/`; `records/` mirrors the local `outputs/` tree and
-holds every JSON the paper cites. Byte-identical reproduction is not guaranteed across GPU models and
-library versions, but every ordering and every reported verdict in the paper is stable across runs;
-the split is fixed by `ckpt/funie_baseline/split.json` and all other sampling uses fixed seeds.
+holds every JSON the paper cites. The two trees are kept byte-identical at 35 files, and every one
+of those files has a producer in `scripts/` — `eval_recalibration_edl.py` and
+`eval_calibration_edl.py` for the two EDL calibration records, `collect_table1_accuracy.py` for
+Table I, and the `eval_*` scripts for the rest. Byte-identical reproduction is not guaranteed across
+GPU models and library versions, but every ordering and every reported verdict in the paper is
+stable across runs; the split is fixed by `ckpt/funie_baseline/split.json` and all other sampling
+uses fixed seeds.
+
+Rather than take the paper's arithmetic on trust, re-derive it:
+
+```bash
+python scripts/verify_paper_numbers.py
+```
+
+That reads `records/` and recomputes 181 quantities — every cell of the seven tables, the bootstrap
+confidence intervals, the ratio inflations, and the ratios annotated in the Fig. 4 and Fig. 6
+captions — printing any value that disagrees with the paper and exiting non-zero if there is one.
+Pass `--arrays outputs` to include the caption ratios that come from the per-pixel arrays, and
+`--records outputs` to check a working tree instead of the shipped records.
 
 Two conventions are worth stating because they are easy to get wrong.
 

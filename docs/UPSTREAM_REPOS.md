@@ -8,7 +8,7 @@ stay intact, and cite them alongside this work.
 
 | Component | Upstream | What we changed |
 |---|---|---|
-| FUnIE-GAN (main backbone, ~2M) | `yangyang0122/funiegan` (PyTorch port: `woozydani/funiegan`) | Removed the discriminator for the deterministic baseline; exposed the bottleneck feature map so an uncertainty head can be attached. |
+| FUnIE-GAN (main backbone, 7.0M) | `yangyang0122/funiegan` (PyTorch port: `woozydani/funiegan`) | Removed the discriminator for the deterministic baseline; exposed the bottleneck feature map so an uncertainty head can be attached. |
 | U-shape Transformer (31.6M) | `LintaoPeng/U-shape_Transformer_for_Underwater_Image_Enhancement` | Replaced the final `feature_to_rgb` layer with the evidential head for the EDL arm. |
 | U-shape Transformer (public reimplementation) | `Lucare11/U-shape-Transformer` | Used for the U-shape ensemble arm. |
 | Mamba-UIE | `zhangsong1213/Mamba-UIE` | Retrained in fp32; the released bf16 autocast path corrupts training (see Sec. VI-C of the paper). |
